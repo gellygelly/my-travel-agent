@@ -1,4 +1,4 @@
-# 이동 거리/시간 계산
+# Google Maps API를 이용한 이동 거리/시간 계산
 
 import os
 import requests
@@ -14,14 +14,16 @@ def get_distance_matrix(locations: list[str]) -> list[DistanceMatrixEntry]:
 
     entries = []
     for origin, destination in origin_dest_pairs:
-        url = "https://maps.googleapis.com/maps/api/distancematrix/json"
+        url = "https://routes.googleapis.com/directions/v2:computeRoutes"
         params = {
-            "origins": origin,
-            "destinations": destination,
-            "mode": "transit",  # 대중교통 기준
+            "origin": origin,
+            "destination": destination,
+            "travelMode": "transit",  # 대중교통 기준
             "key": GOOGLE_MAPS_API_KEY
         }
-        res = requests.get(url, params=params).json()
+        res = requests.post(url, params=params).json()
+
+        print('구글 Maps API 응답 확인용: {res}')
         element = res["rows"][0]["elements"][0]
 
         entries.append(DistanceMatrixEntry(

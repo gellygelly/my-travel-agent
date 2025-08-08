@@ -12,12 +12,16 @@ def recommend(req: RecommendationRequest):
 
     # 간단한 후처리 (LLM 응답 포맷에 따라 조정 가능)
     lines = [line.strip() for line in result.split("\n") if line.strip()]
-    best_season = next((line for line in lines if "시기" in line or "좋은 시기" in line), "")
-    spots = [line for line in lines if any(keyword in line.lower() for keyword in ["추천", "명소", "관광지", "spot"])]
-    spots = spots[:5] if len(spots) >= 5 else spots
-
+    best_months_text = next((line for line in lines if "best_months" in line), "").replace("best_months: ", "")
+    best_months_text = best_months_text.strip("[]")
+    best_months = [item.strip() for item in best_months_text.split(",")]
+    
+    spots_text =  next((line for line in lines if "recommended_spots" in line), "").replace("recommended_spots: ", "")
+    spots_text = spots_text.strip("[]")
+    spots = [item.strip() for item in spots_text.split(",")]
+    
     return RecommendationResponse(
-        best_season=best_season,
+        best_months=best_months,
         recommended_spots=spots,
         raw_response=result
     )

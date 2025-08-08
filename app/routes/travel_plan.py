@@ -1,3 +1,5 @@
+# 여행 계획 종합 추천 API
+
 from fastapi import APIRouter
 from app.schemas.travel_plan import TravelPlanRequest, TravelPlanResponse
 from app.agents.recommendation import recommend_destination_info
@@ -13,7 +15,7 @@ def create_travel_plan(req: TravelPlanRequest):
     # 1. 여행지 추천
     rec_result = recommend_destination_info(req.destination)
     spots = rec_result.recommended_spots
-    best_season = rec_result.best_season
+    best_months = rec_result.best_months
 
     # 2. 여행지별 거리 계산
     matrix = get_distance_matrix(spots)

@@ -52,7 +52,8 @@ template = """
 
 def generate_checklist(request: ChecklistRequest):
     llm = get_llm()
-    chain = LLMChain(llm=llm, prompt=PromptTemplate.from_template(template))
+    prompt = PromptTemplate.from_template(template)
+    chain = prompt | llm
 
     if request.travel_spots:
         travel_spots_info = f"사용자는 다음 장소들을 방문할 예정입니다:\n" + \
@@ -60,7 +61,7 @@ def generate_checklist(request: ChecklistRequest):
     else:
         travel_spots_info = ""
 
-    result = chain.run({
+    result = chain.invoke({
         "country": request.country,
         "trip_type": request.trip_type,
         "days": request.days,

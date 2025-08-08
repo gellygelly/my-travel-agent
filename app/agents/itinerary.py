@@ -25,7 +25,7 @@ prompt = PromptTemplate.from_template(template)
 
 def generate_itinerary(destination: str, days: int, spots: list[str], distances: list[DistanceMatrixEntry]) -> str:
     llm = get_llm()
-    chain = LLMChain(llm=llm, prompt=prompt)
+    chain = prompt | llm
 
     spot_list = "\n".join(f"- {s}" for s in spots)
     distance_info = "\n".join(
