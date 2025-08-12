@@ -26,6 +26,13 @@ prompt = PromptTemplate.from_template(template)
 def generate_itinerary(destination: str, days: int, spots: list[str], distances: list[DistanceMatrixEntry]) -> str:
     llm = get_llm()
     chain = prompt | llm
+    
+    # maps.py 에서 
+    # 1. Maps API를 이용해 각 스팟 간 거리, 이동 시간 계산
+    # 2. 스팟 간 거리, 이동 시간을 바탕으로 거리/이동 시간 적은 순 클러스터링
+
+    # 여기에서
+    # 해당 정보를 다음과 같은 형태로 묶어 일정 구성해달라고 LLM에게 요청
 
     spot_list = "\n".join(f"- {s}" for s in spots)
     distance_info = "\n".join(
@@ -37,7 +44,7 @@ def generate_itinerary(destination: str, days: int, spots: list[str], distances:
         "destination": destination,
         "days": days,
         "spot_list": spot_list,
-        "distance_info": distance_info
+        "distance_info": distance_info,
     })
     return result
 

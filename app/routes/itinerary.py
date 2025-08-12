@@ -12,3 +12,15 @@ def generate(req: ItineraryRequest):
     matrix = get_distance_matrix(req.spots)
     result = generate_itinerary(req.destination, req.days, req.spots, matrix)
     return ItineraryResponse(itinerary_plan=result, matrix=matrix)
+
+"""
+Request Body Ex 
+
+{
+  "destination": "타이베이",
+  "days": 3,
+  "spots": [
+    "단수이", "대만 고궁박물관", "용산사", "시먼딩", "타이베이101", "스란 야시장", "중정기념당", "예스지 투어"
+  ]
+}
+"""

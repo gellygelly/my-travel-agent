@@ -63,12 +63,14 @@ def generate_checklist(request: ChecklistRequest):
 
     result = chain.invoke({
         "country": request.country,
-        "trip_type": request.trip_type,
+        "trip_type": request.trip_type, # 패키지, 자유여행 등
         "days": request.days,
         "season": request.season,
         "purpose": request.purpose,
         "travel_spots_info": travel_spots_info
     })
+
+    print(f'체크리스트 확인용: {result}')
 
     # 기존 파서 + 추가
     def extract_section(text: str, header: str) -> list[str] | str:
@@ -90,5 +92,4 @@ def generate_checklist(request: ChecklistRequest):
         "essential_items": extract_section(result, "공통 준비물"),
         "country_specific_items": extract_section(result, "해당 국가 전용 준비물"),
         "raw_response": result
-        # ✅ 일정 기반 준비물은 따로 프론트에서 보여줄 수도 있음
     }

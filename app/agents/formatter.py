@@ -30,7 +30,7 @@ def format_itinerary_output(destination: str, days: int, spots: list[str], dista
     )
     joined_spots = "\n".join(f"- {s}" for s in spots)
 
-    chain = LLMChain(llm=llm, prompt=prompt)
+    chain = prompt | llm
     result = chain.run({
         "destination": destination,
         "days": days,
