@@ -70,26 +70,4 @@ def generate_checklist(request: ChecklistRequest):
         "travel_spots_info": travel_spots_info
     })
 
-    print(f'체크리스트 확인용: {result}')
-
-    # 기존 파서 + 추가
-    def extract_section(text: str, header: str) -> list[str] | str:
-        import re
-        pattern = rf"\[{header}\](.*?)(\n\[|$)"
-        match = re.search(pattern, text, re.DOTALL)
-        if match:
-            content = match.group(1).strip()
-            if header in ["공통 준비물", "해당 국가 전용 준비물", "입출국 준비 서류", "교통 카드/패스", "일정 기반 준비물"]:
-                return [line.strip("- ").strip() for line in content.split("\n") if line.strip()]
-            return content
-        return [] if "목록" in header else ""
-
-    return {
-        "summary": extract_section(result, "요약 설명"),
-        "power_info": extract_section(result, "전압 및 플러그 정보"),
-        "travel_docs": extract_section(result, "입출국 준비 서류"),
-        "transport_tips": extract_section(result, "교통 카드/패스"),
-        "essential_items": extract_section(result, "공통 준비물"),
-        "country_specific_items": extract_section(result, "해당 국가 전용 준비물"),
-        "raw_response": result
-    }
+    return result
